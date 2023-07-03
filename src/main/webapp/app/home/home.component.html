@@ -1,0 +1,78 @@
+<div class="row">
+  <div class="col-md-3">
+    <span class="hipster img-fluid rounded"></span>
+  </div>
+
+  <div class="col-md-9">
+    <h1 class="display-4"><span jhiTranslate="home.title">Tere tulemast, Java Hipster!</span> (Hotel App)</h1>
+
+    <p class="lead" jhiTranslate="home.subtitle">See on teie avaleht</p>
+
+    <div [ngSwitch]="account !== null">
+      <div class="alert alert-success" *ngSwitchCase="true">
+        <span id="home-logged-message" *ngIf="account" jhiTranslate="home.logged.message" [translateValues]="{ username: account.login }"
+          >Olete sisse logitud kasutajana "{{ account.login }}".</span
+        >
+      </div>
+
+      <div class="alert alert-warning" *ngSwitchCase="false">
+        <span jhiTranslate="global.messages.info.authenticated.prefix">Kui te soovite </span>
+        <a class="alert-link" (click)="login()" jhiTranslate="global.messages.info.authenticated.link">sisse logida</a
+        ><span jhiTranslate="global.messages.info.authenticated.suffix"
+          >, siis võite kasutada vaikekontosid:<br />- Administraator (kasutajanimi="admin" ja salasõna="admin") <br />- Kasutaja
+          (kasutajanimi="user" ja salasõna="user").</span
+        >
+      </div>
+
+      <div class="alert alert-warning" *ngSwitchCase="false">
+        <span jhiTranslate="global.messages.info.register.noaccount">Teil pole veel kontot?</span>&nbsp;
+        <a class="alert-link" routerLink="account/register" jhiTranslate="global.messages.info.register.link">Registreerige uus konto</a>
+      </div>
+    </div>
+
+    <p jhiTranslate="home.question">Kui teil on küsimusi JHipster kohta:</p>
+
+    <ul>
+      <li>
+        <a href="https://www.jhipster.tech/" target="_blank" rel="noopener noreferrer" jhiTranslate="home.link.homepage"
+          >JHipster koduleht</a
+        >
+      </li>
+      <li>
+        <a
+          href="https://stackoverflow.com/tags/jhipster/info"
+          target="_blank"
+          rel="noopener noreferrer"
+          jhiTranslate="home.link.stackoverflow"
+          >JHipster Stack Overflow-s</a
+        >
+      </li>
+      <li>
+        <a
+          href="https://github.com/jhipster/generator-jhipster/issues?state=open"
+          target="_blank"
+          rel="noopener noreferrer"
+          jhiTranslate="home.link.bugtracker"
+          >JHipster veahaldus</a
+        >
+      </li>
+      <li>
+        <a href="https://gitter.im/jhipster/generator-jhipster" target="_blank" rel="noopener noreferrer" jhiTranslate="home.link.chat"
+          >JHipster avalik jututuba</a
+        >
+      </li>
+      <li>
+        <a href="https://twitter.com/jhipster" target="_blank" rel="noopener noreferrer" jhiTranslate="home.link.follow"
+          >jälgi @jhipster Twitteris</a
+        >
+      </li>
+    </ul>
+
+    <p>
+      <span jhiTranslate="home.like">Kui teile meeldib JHipster, siis ärge unustage anda meile tähte</span>
+      <a href="https://github.com/jhipster/generator-jhipster" target="_blank" rel="noopener noreferrer" jhiTranslate="home.github"
+        >GitHub-is</a
+      >!
+    </p>
+  </div>
+</div>

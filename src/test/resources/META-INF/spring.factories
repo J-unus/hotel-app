@@ -1,0 +1,1 @@
+org.springframework.test.context.ContextCustomizerFactory = ee.helmes.hotel.config.TestContainersSpringContextCustomizerFactory
