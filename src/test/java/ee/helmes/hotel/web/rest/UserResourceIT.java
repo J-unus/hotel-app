@@ -10,7 +10,7 @@ import ee.helmes.hotel.domain.Authority;
 import ee.helmes.hotel.domain.User;
 import ee.helmes.hotel.repository.UserRepository;
 import ee.helmes.hotel.security.AuthoritiesConstants;
-import ee.helmes.hotel.service.dto.AdminUserDTO;
+import ee.helmes.hotel.service.dto.AdminUserDto;
 import ee.helmes.hotel.service.mapper.UserMapper;
 import ee.helmes.hotel.web.rest.vm.ManagedUserVM;
 import java.time.Instant;
@@ -480,7 +480,7 @@ class UserResourceIT {
 
     @Test
     void testUserDTOtoUser() {
-        AdminUserDTO userDTO = new AdminUserDTO();
+        AdminUserDto userDTO = new AdminUserDto();
         userDTO.setId(DEFAULT_ID);
         userDTO.setLogin(DEFAULT_LOGIN);
         userDTO.setFirstName(DEFAULT_FIRSTNAME);
@@ -522,7 +522,7 @@ class UserResourceIT {
         authorities.add(authority);
         user.setAuthorities(authorities);
 
-        AdminUserDTO userDTO = userMapper.userToAdminUserDTO(user);
+        AdminUserDto userDTO = userMapper.userToAdminUserDTO(user);
 
         assertThat(userDTO.getId()).isEqualTo(DEFAULT_ID);
         assertThat(userDTO.getLogin()).isEqualTo(DEFAULT_LOGIN);

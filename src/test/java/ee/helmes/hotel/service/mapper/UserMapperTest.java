@@ -3,8 +3,8 @@ package ee.helmes.hotel.service.mapper;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ee.helmes.hotel.domain.User;
-import ee.helmes.hotel.service.dto.AdminUserDTO;
-import ee.helmes.hotel.service.dto.UserDTO;
+import ee.helmes.hotel.service.dto.AdminUserDto;
+import ee.helmes.hotel.service.dto.UserDto;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -23,7 +23,7 @@ class UserMapperTest {
 
     private UserMapper userMapper;
     private User user;
-    private AdminUserDTO userDto;
+    private AdminUserDto userDto;
 
     @BeforeEach
     public void init() {
@@ -38,7 +38,7 @@ class UserMapperTest {
         user.setImageUrl("image_url");
         user.setLangKey("en");
 
-        userDto = new AdminUserDTO(user);
+        userDto = new AdminUserDto(user);
     }
 
     @Test
@@ -47,14 +47,14 @@ class UserMapperTest {
         users.add(user);
         users.add(null);
 
-        List<UserDTO> userDTOS = userMapper.usersToUserDTOs(users);
+        List<UserDto> userDtos = userMapper.usersToUserDTOs(users);
 
-        assertThat(userDTOS).isNotEmpty().size().isEqualTo(1);
+        assertThat(userDtos).isNotEmpty().size().isEqualTo(1);
     }
 
     @Test
     void userDTOsToUsersShouldMapOnlyNonNullUsers() {
-        List<AdminUserDTO> usersDto = new ArrayList<>();
+        List<AdminUserDto> usersDto = new ArrayList<>();
         usersDto.add(userDto);
         usersDto.add(null);
 
@@ -69,7 +69,7 @@ class UserMapperTest {
         authoritiesAsString.add("ADMIN");
         userDto.setAuthorities(authoritiesAsString);
 
-        List<AdminUserDTO> usersDto = new ArrayList<>();
+        List<AdminUserDto> usersDto = new ArrayList<>();
         usersDto.add(userDto);
 
         List<User> users = userMapper.userDTOsToUsers(usersDto);
@@ -84,7 +84,7 @@ class UserMapperTest {
     void userDTOsToUsersMapWithNullAuthoritiesStringShouldReturnUserWithEmptyAuthorities() {
         userDto.setAuthorities(null);
 
-        List<AdminUserDTO> usersDto = new ArrayList<>();
+        List<AdminUserDto> usersDto = new ArrayList<>();
         usersDto.add(userDto);
 
         List<User> users = userMapper.userDTOsToUsers(usersDto);

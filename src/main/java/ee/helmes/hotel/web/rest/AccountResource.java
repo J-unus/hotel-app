@@ -5,8 +5,8 @@ import ee.helmes.hotel.repository.UserRepository;
 import ee.helmes.hotel.security.SecurityUtils;
 import ee.helmes.hotel.service.MailService;
 import ee.helmes.hotel.service.UserService;
-import ee.helmes.hotel.service.dto.AdminUserDTO;
-import ee.helmes.hotel.service.dto.PasswordChangeDTO;
+import ee.helmes.hotel.service.dto.AdminUserDto;
+import ee.helmes.hotel.service.dto.PasswordChangeDto;
 import ee.helmes.hotel.web.rest.errors.*;
 import ee.helmes.hotel.web.rest.vm.KeyAndPasswordVM;
 import ee.helmes.hotel.web.rest.vm.ManagedUserVM;
@@ -74,7 +74,7 @@ public class AccountResource {
     @GetMapping("/activate")
     public void activateAccount(@RequestParam(value = "key") String key) {
         Optional<User> user = userService.activateRegistration(key);
-        if (!user.isPresent()) {
+        if (user.isEmpty()) {
             throw new AccountResourceException("No user was found for this activation key");
         }
     }
@@ -98,10 +98,10 @@ public class AccountResource {
      * @throws RuntimeException {@code 500 (Internal Server Error)} if the user couldn't be returned.
      */
     @GetMapping("/account")
-    public AdminUserDTO getAccount() {
+    public AdminUserDto getAccount() {
         return userService
             .getUserWithAuthorities()
-            .map(AdminUserDTO::new)
+            .map(AdminUserDto::new)
             .orElseThrow(() -> new AccountResourceException("User could not be found"));
     }
 
@@ -113,7 +113,7 @@ public class AccountResource {
      * @throws RuntimeException {@code 500 (Internal Server Error)} if the user login wasn't found.
      */
     @PostMapping("/account")
-    public void saveAccount(@Valid @RequestBody AdminUserDTO userDTO) {
+    public void saveAccount(@Valid @RequestBody AdminUserDto userDTO) {
         String userLogin = SecurityUtils
             .getCurrentUserLogin()
             .orElseThrow(() -> new AccountResourceException("Current user login not found"));
@@ -122,7 +122,7 @@ public class AccountResource {
             throw new EmailAlreadyUsedException();
         }
         Optional<User> user = userRepository.findOneByLogin(userLogin);
-        if (!user.isPresent()) {
+        if (user.isEmpty()) {
             throw new AccountResourceException("User could not be found");
         }
         userService.updateUser(
@@ -141,7 +141,7 @@ public class AccountResource {
      * @throws InvalidPasswordException {@code 400 (Bad Request)} if the new password is incorrect.
      */
     @PostMapping(path = "/account/change-password")
-    public void changePassword(@RequestBody PasswordChangeDTO passwordChangeDto) {
+    public void changePassword(@RequestBody PasswordChangeDto passwordChangeDto) {
         if (isPasswordLengthInvalid(passwordChangeDto.getNewPassword())) {
             throw new InvalidPasswordException();
         }
@@ -179,7 +179,7 @@ public class AccountResource {
         }
         Optional<User> user = userService.completePasswordReset(keyAndPassword.getNewPassword(), keyAndPassword.getKey());
 
-        if (!user.isPresent()) {
+        if (user.isEmpty()) {
             throw new AccountResourceException("No user was found for this reset key");
         }
     }

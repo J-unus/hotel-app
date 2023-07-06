@@ -5,18 +5,18 @@ import java.io.Serializable;
 /**
  * A DTO representing a password change required data - current and new password.
  */
-public class PasswordChangeDTO implements Serializable {
+public class PasswordChangeDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private String currentPassword;
     private String newPassword;
 
-    public PasswordChangeDTO() {
+    public PasswordChangeDto() {
         // Empty constructor needed for Jackson.
     }
 
-    public PasswordChangeDTO(String currentPassword, String newPassword) {
+    public PasswordChangeDto(String currentPassword, String newPassword) {
         this.currentPassword = currentPassword;
         this.newPassword = newPassword;
     }

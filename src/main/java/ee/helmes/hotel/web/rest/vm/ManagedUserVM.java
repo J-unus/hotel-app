@@ -1,12 +1,12 @@
 package ee.helmes.hotel.web.rest.vm;
 
-import ee.helmes.hotel.service.dto.AdminUserDTO;
+import ee.helmes.hotel.service.dto.AdminUserDto;
 import javax.validation.constraints.Size;
 
 /**
  * View Model extending the AdminUserDTO, which is meant to be used in the user management UI.
  */
-public class ManagedUserVM extends AdminUserDTO {
+public class ManagedUserVM extends AdminUserDto {
 
     public static final int PASSWORD_MIN_LENGTH = 4;
 

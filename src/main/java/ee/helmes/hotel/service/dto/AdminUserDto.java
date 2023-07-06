@@ -12,7 +12,7 @@ import javax.validation.constraints.*;
 /**
  * A DTO representing a user, with his authorities.
  */
-public class AdminUserDTO implements Serializable {
+public class AdminUserDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -51,11 +51,11 @@ public class AdminUserDTO implements Serializable {
 
     private Set<String> authorities;
 
-    public AdminUserDTO() {
+    public AdminUserDto() {
         // Empty constructor needed for Jackson.
     }
 
-    public AdminUserDTO(User user) {
+    public AdminUserDto(User user) {
         this.id = user.getId();
         this.login = user.getLogin();
         this.firstName = user.getFirstName();
