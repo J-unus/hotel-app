@@ -21,7 +21,7 @@ public class Room extends AbstractAuditingEntity<Long> implements Serializable {
     private Long id;
 
     @Column(nullable = false)
-    int roomAmount;
+    private Integer roomAmount;
 
     @OneToMany(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RoomPrice> roomPriceList = new ArrayList<>();
