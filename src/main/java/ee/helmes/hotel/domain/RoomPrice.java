@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "room_price")
+@Table(name = "room_price", uniqueConstraints = { @UniqueConstraint(columnNames = { "room_id", "currency" }) })
 public class RoomPrice extends AbstractAuditingEntity<Long> implements Serializable {
 
     private static final long serialVersionUID = 1L;
