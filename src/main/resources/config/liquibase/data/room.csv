@@ -1,5 +1,9 @@
-id;room_amount;created_by;last_modified_by
-1;1;system;system
-2;2;system;system
-3;2;system;system
-4;1;system;system
+id;room_amount;size;created_by;last_modified_by;description
+1;1;15;system;system;Room has a beautiful view to the harbour and sea. It has stylish, contemporary design in cool colours and hardwood floor.
+2;3;48;system;system;Stretch out in your spacious Suite, complete with all of the amenities of a Collection Room but including a separate living area. Connect to the free Wi-Fi and then relax in front of the TV with mirror casting. Everything you need for a comfortable stay is in the room. Enjoy access to the gym and relaxation area on the 4th floor.
+3;2;30;system;system;Breathtaking views on the harbour of Tallinn the two bedroom suite comprises of:  A living room, home office, floor to ceiling windows, black out curtains.
+4;1;15;system;system;Room provides everything you need for a cozy stay, from free Wi-Fi to a minibar. Enjoy thoughtful perks like one complimentary garment pressing and bottled water, and order from the pillow menu. You can also enjoy complimentary access to our gym and relaxation area on the 4th floor.
+5;1;15;system;system;Room provides everything you need for a cozy stay, from free Wi-Fi to a minibar. Enjoy thoughtful perks like one complimentary garment pressing and bottled water, and order from the pillow menu. You can also enjoy complimentary access to our gym and relaxation area on the 4th floor.
+6;3;48;system;system;Spend more quality time with your loved ones in our cozy Family Room. Perfect for a family of three, everything you need for a comfortable stay is in the room. For younger guests, there is a fold-out chair or sofa in the room. Enjoy access to our gym and relaxation area that are located on the 4th floor together with our Family Rooms.
+7;1;15;system;system;Room provides everything you need for a cozy stay, from free Wi-Fi to a minibar. Enjoy thoughtful perks like one complimentary garment pressing and bottled water, and order from the pillow menu. You can also enjoy complimentary access to our gym and relaxation area on the 4th floor.
+8;2;30;system;system;Enjoy a comfortable night's sleep in one king bed or two twin beds when staying in the Collection Superior Room. Everything you need is in the room, and you can enjoy complimentary access to our gym and relaxation area on the 4th floor.

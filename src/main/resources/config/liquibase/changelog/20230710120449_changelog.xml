@@ -1,6 +1,6 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
-    <changeSet author="kristjan.junus (generated)" id="1688544699080-3">
+    <changeSet author="kristjan.junus (generated)" id="1688979893675-3">
         <createTable tableName="booking">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="bookingPK"/>
@@ -28,7 +28,23 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="kristjan.junus (generated)" id="1688544699080-4">
+    <changeSet author="kristjan.junus (generated)" id="1688979893675-4">
+        <createTable tableName="facility">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="facilityPK"/>
+            </column>
+            <column name="created_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
+            <column name="last_modified_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="kristjan.junus (generated)" id="1688979893675-5">
         <createTable tableName="room">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="roomPK"/>
@@ -39,12 +55,37 @@
             <column name="created_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
             <column name="last_modified_by" type="VARCHAR(50)"/>
             <column name="last_modified_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="description" type="VARCHAR(2000)">
+                <constraints nullable="false"/>
+            </column>
             <column name="room_amount" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="size" type="INTEGER">
                 <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="kristjan.junus (generated)" id="1688544699080-5">
+    <changeSet author="kristjan.junus (generated)" id="1688979893675-6">
+        <createTable tableName="room_facility">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="room_facilityPK"/>
+            </column>
+            <column name="created_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
+            <column name="last_modified_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="facility_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="room_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="kristjan.junus (generated)" id="1688979893675-7">
         <createTable tableName="room_price">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="room_pricePK"/>
@@ -66,13 +107,28 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="kristjan.junus (generated)" id="1688544699080-6">
+    <changeSet author="kristjan.junus (generated)" id="1688979893675-8">
+        <addUniqueConstraint columnNames="name" constraintName="UC_FACILITYNAME_COL" tableName="facility"/>
+    </changeSet>
+    <changeSet author="kristjan.junus (generated)" id="1688979893675-9">
+        <addUniqueConstraint columnNames="room_id, currency" constraintName="UKg2wa65aq2r463k216my3qo2rf" tableName="room_price"/>
+    </changeSet>
+    <changeSet author="kristjan.junus (generated)" id="1688979893675-10">
+        <addUniqueConstraint columnNames="room_id, facility_id" constraintName="UKt6ik4p0yxt5i7mlbgapbo2nk3" tableName="room_facility"/>
+    </changeSet>
+    <changeSet author="kristjan.junus (generated)" id="1688979893675-11">
         <addForeignKeyConstraint baseColumnNames="booker_id" baseTableName="booking" constraintName="FK6jfshhq848udxsxyqvbvpqmp6" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="jhi_user" validate="true"/>
     </changeSet>
-    <changeSet author="kristjan.junus (generated)" id="1688544699080-7">
+    <changeSet author="kristjan.junus (generated)" id="1688979893675-12">
         <addForeignKeyConstraint baseColumnNames="room_id" baseTableName="room_price" constraintName="FKfj3ode2586k91fceuwrtfxhqp" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="room" validate="true"/>
     </changeSet>
-    <changeSet author="kristjan.junus (generated)" id="1688544699080-8">
+    <changeSet author="kristjan.junus (generated)" id="1688979893675-13">
+        <addForeignKeyConstraint baseColumnNames="facility_id" baseTableName="room_facility" constraintName="FKj7d5o0yjvyvev7owenan66mcy" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="facility" validate="true"/>
+    </changeSet>
+    <changeSet author="kristjan.junus (generated)" id="1688979893675-14">
         <addForeignKeyConstraint baseColumnNames="room_id" baseTableName="booking" constraintName="FKq83pan5xy2a6rn0qsl9bckqai" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="room" validate="true"/>
+    </changeSet>
+    <changeSet author="kristjan.junus (generated)" id="1688979893675-15">
+        <addForeignKeyConstraint baseColumnNames="room_id" baseTableName="room_facility" constraintName="FKt8cyiqxlu6kpr29sa7n1vk4pm" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="room" validate="true"/>
     </changeSet>
 </databaseChangeLog>

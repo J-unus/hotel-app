@@ -1,5 +1,9 @@
 id;one_night_price_in_cents;currency;room_id;created_by;last_modified_by
-1;12000;EUR;1;system;system
-2;8500;EUR;2;system;system
-3;6000;EUR;3;system;system
-4;4500;EUR;4;system;system
+1;8500;EUR;1;system;system
+2;25000;EUR;2;system;system
+3;15000;EUR;3;system;system
+4;10000;EUR;4;system;system
+5;9000;EUR;5;system;system
+6;27000;EUR;6;system;system
+7;6000;EUR;7;system;system
+8;17500;EUR;8;system;system

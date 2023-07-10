@@ -13,5 +13,17 @@
             tableName="room_price"
             usePreparedStatements="true">
         </loadData>
+        <loadData
+            file="config/liquibase/data/facility.csv"
+            separator=";"
+            tableName="facility"
+            usePreparedStatements="true">
+        </loadData>
+        <loadData
+            file="config/liquibase/data/room_facility.csv"
+            separator=";"
+            tableName="room_facility"
+            usePreparedStatements="true">
+        </loadData>
     </changeSet>
 </databaseChangeLog>

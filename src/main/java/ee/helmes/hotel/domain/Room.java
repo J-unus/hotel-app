@@ -23,6 +23,12 @@ public class Room extends AbstractAuditingEntity<Long> implements Serializable {
     @Column(nullable = false)
     private Integer roomAmount;
 
+    @Column(nullable = false)
+    private Integer size;
+
+    @Column(nullable = false)
+    private String description;
+
     @OneToMany(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RoomPrice> roomPriceList = new ArrayList<>();
 }

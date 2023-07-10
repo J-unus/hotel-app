@@ -1,0 +1,11 @@
+id;name;created_by;last_modified_by
+1;FACILITY_SHOWER;system;system
+2;FACILITY_AIR_CONDITIONER;system;system
+3;FACILITY_WIFI;system;system
+4;FACILITY_PHONE;system;system
+5;FACILITY_TV;system;system
+6;FACILITY_BATHTUB;system;system
+7;FACILITY_SMALL_KITCHEN;system;system
+8;FACILITY_COFFEE_MAKER;system;system
+9;FACILITY_SAUNA;system;system
+10;FACILITY_REFRIGERATOR;system;system
