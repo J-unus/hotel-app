@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,9 +20,9 @@ public class RoomService {
     private final RoomMapper roomMapper;
     private final RoomSpecificationService roomSpecificationService;
 
+    @Transactional
     public Page<RoomDto> query(Pageable pageable, RoomFilter roomFilter) {
         Specification<Room> spec = roomSpecificationService.getRoomSpecification(roomFilter);
-
         return roomRepository.findAll(spec, pageable).map(roomMapper::fromEntityToDto);
     }
 }

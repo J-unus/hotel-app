@@ -4,11 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "room_price", uniqueConstraints = { @UniqueConstraint(columnNames = { "room_id", "currency" }) })
 public class RoomPrice extends AbstractAuditingEntity<Long> implements Serializable {
@@ -30,4 +26,36 @@ public class RoomPrice extends AbstractAuditingEntity<Long> implements Serializa
     @JsonIgnore
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Room room;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Integer getOneNightPriceInCents() {
+        return oneNightPriceInCents;
+    }
+
+    public void setOneNightPriceInCents(Integer oneNightPriceInCents) {
+        this.oneNightPriceInCents = oneNightPriceInCents;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
+    }
 }
