@@ -32,21 +32,17 @@ public class DomainUserDetailsService implements UserDetailsService {
 
     @Override
     @Transactional(readOnly = true)
-    public UserDetails loadUserByUsername(final String login) {
-        log.debug("Authenticating {}", login);
+    public UserDetails loadUserByUsername(final String email) {
+        log.debug("Authenticating {}", email);
 
-        if (new EmailValidator().isValid(login, null)) {
+        if (new EmailValidator().isValid(email, null)) {
             return userRepository
-                .findOneWithAuthoritiesByEmailIgnoreCase(login)
-                .map(user -> createSpringSecurityUser(login, user))
-                .orElseThrow(() -> new UsernameNotFoundException("User with email " + login + " was not found in the database"));
+                .findOneWithAuthoritiesByEmailIgnoreCase(email)
+                .map(user -> createSpringSecurityUser(email, user))
+                .orElseThrow(() -> new UsernameNotFoundException("User with email " + email + " was not found in the database"));
         }
 
-        String lowercaseLogin = login.toLowerCase(Locale.ENGLISH);
-        return userRepository
-            .findOneWithAuthoritiesByLogin(lowercaseLogin)
-            .map(user -> createSpringSecurityUser(lowercaseLogin, user))
-            .orElseThrow(() -> new UsernameNotFoundException("User " + lowercaseLogin + " was not found in the database"));
+        throw new UsernameNotFoundException("User with email " + email + " was not found in the database");
     }
 
     private org.springframework.security.core.userdetails.User createSpringSecurityUser(String lowercaseLogin, User user) {
@@ -59,6 +55,6 @@ public class DomainUserDetailsService implements UserDetailsService {
             .map(Authority::getName)
             .map(SimpleGrantedAuthority::new)
             .collect(Collectors.toList());
-        return new org.springframework.security.core.userdetails.User(user.getLogin(), user.getPassword(), grantedAuthorities);
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), grantedAuthorities);
     }
 }

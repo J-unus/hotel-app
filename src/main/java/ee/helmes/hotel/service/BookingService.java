@@ -44,7 +44,7 @@ public class BookingService {
     }
 
     public void book(Long roomId, BookingCreateDto createDto) {
-        User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().orElseThrow()).orElseThrow();
+        User user = userRepository.findOneByEmailIgnoreCase(SecurityUtils.getCurrentUserLogin().orElseThrow()).orElseThrow();
         Room room = roomRepository.getReferenceById(roomId);
 
         if (isRoomBooked(room, createDto)) {
@@ -70,7 +70,7 @@ public class BookingService {
     }
 
     public void cancel(Long bookingId) {
-        User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().orElseThrow()).orElseThrow();
+        User user = userRepository.findOneByEmailIgnoreCase(SecurityUtils.getCurrentUserLogin().orElseThrow()).orElseThrow();
         Booking booking = bookingRepository.getReferenceById(bookingId);
 
         if (!isBookingBooker(booking, user)) {

@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Long> {
-    @Query(" SELECT b" + " FROM Booking b" + " JOIN User u" + " WHERE u.login = :userName")
+    @Query(" SELECT b" + " FROM Booking b" + " JOIN User u" + " WHERE u.email = :userName")
     List<Booking> findByUserName(@Param("userName") String userName);
 }

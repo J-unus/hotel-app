@@ -21,7 +21,7 @@ public class UserDto implements Serializable {
     public UserDto(User user) {
         this.id = user.getId();
         // Customize it here if you need, or not, firstName/lastName/etc
-        this.login = user.getLogin();
+        this.login = user.getEmail();
     }
 
     public Long getId() {

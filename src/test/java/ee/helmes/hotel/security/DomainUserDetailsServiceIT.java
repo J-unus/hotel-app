@@ -40,7 +40,6 @@ class DomainUserDetailsServiceIT {
     @BeforeEach
     public void init() {
         User userOne = new User();
-        userOne.setLogin(USER_ONE_LOGIN);
         userOne.setPassword(RandomStringUtils.randomAlphanumeric(60));
         userOne.setActivated(true);
         userOne.setEmail(USER_ONE_EMAIL);
@@ -50,7 +49,6 @@ class DomainUserDetailsServiceIT {
         userRepository.save(userOne);
 
         User userTwo = new User();
-        userTwo.setLogin(USER_TWO_LOGIN);
         userTwo.setPassword(RandomStringUtils.randomAlphanumeric(60));
         userTwo.setActivated(true);
         userTwo.setEmail(USER_TWO_EMAIL);
@@ -60,7 +58,6 @@ class DomainUserDetailsServiceIT {
         userRepository.save(userTwo);
 
         User userThree = new User();
-        userThree.setLogin(USER_THREE_LOGIN);
         userThree.setPassword(RandomStringUtils.randomAlphanumeric(60));
         userThree.setActivated(false);
         userThree.setEmail(USER_THREE_EMAIL);
