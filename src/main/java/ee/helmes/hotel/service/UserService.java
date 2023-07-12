@@ -92,14 +92,6 @@ public class UserService {
                     throw new UsernameAlreadyUsedException();
                 }
             });
-        userRepository
-            .findOneByEmailIgnoreCase(userDTO.getEmail())
-            .ifPresent(existingUser -> {
-                boolean removed = removeNonActivatedUser(existingUser);
-                if (!removed) {
-                    throw new EmailAlreadyUsedException();
-                }
-            });
         User newUser = new User();
         String encryptedPassword = passwordEncoder.encode(password);
         // new user gets initially a generated password

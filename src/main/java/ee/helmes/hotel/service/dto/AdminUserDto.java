@@ -1,13 +1,14 @@
 package ee.helmes.hotel.service.dto;
 
-import ee.helmes.hotel.config.Constants;
 import ee.helmes.hotel.domain.Authority;
 import ee.helmes.hotel.domain.User;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Set;
 import java.util.stream.Collectors;
-import javax.validation.constraints.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 /**
  * A DTO representing a user, with his authorities.
@@ -18,16 +19,20 @@ public class AdminUserDto implements Serializable {
 
     private Long id;
 
+    @NotEmpty
     @Size(max = 50)
     private String firstName;
 
+    @NotEmpty
     @Size(max = 50)
     private String lastName;
 
+    @NotEmpty
     @Email
     @Size(min = 5, max = 254)
     private String email;
 
+    @NotEmpty
     private String identityNumber;
 
     private boolean activated = false;
