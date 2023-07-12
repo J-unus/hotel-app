@@ -20,9 +20,14 @@ public class RoomService {
     private final RoomMapper roomMapper;
     private final RoomSpecificationService roomSpecificationService;
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Page<RoomDto> query(Pageable pageable, RoomFilter roomFilter) {
         Specification<Room> spec = roomSpecificationService.getRoomSpecification(roomFilter);
         return roomRepository.findAll(spec, pageable).map(roomMapper::fromEntityToDto);
+    }
+
+    @Transactional(readOnly = true)
+    public RoomDto getById(Long id) {
+        return roomMapper.fromEntityToDto(roomRepository.getReferenceById(id));
     }
 }
