@@ -19,6 +19,8 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -36,8 +38,9 @@ public class BookingService {
         return bookingMapper.fromEntityToDto(bookings);
     }
 
-    public List<BookingDto> findAll() {
-        return bookingMapper.fromEntityToDto(bookingRepository.findAll());
+    public Page<BookingDto> findAll(PageRequest request) {
+        Page<Booking> bookings = bookingRepository.findAll(request);
+        return bookings.map(bookingMapper::fromEntityToDto);
     }
 
     public void book(Long roomId, BookingCreateDto createDto) {

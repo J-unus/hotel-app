@@ -7,6 +7,8 @@ import ee.helmes.hotel.service.dto.BookingDto;
 import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,8 +27,8 @@ public class BookingController {
 
     @PreAuthorize(Role.HAS_ROLE_ADMIN)
     @GetMapping("/bookings/employee")
-    public List<BookingDto> getBookingList() {
-        return bookingService.findAll();
+    public Page<BookingDto> getBookingList(@RequestParam int page, @RequestParam int size) {
+        return bookingService.findAll(PageRequest.of(page, size));
     }
 
     @PreAuthorize(Role.HAS_ROLE_FROM_USER)
