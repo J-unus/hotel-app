@@ -31,28 +31,22 @@ public class RoomSpecificationService {
             Instant instantEnd = Clock
                 .fixed(roomFilter.getEndDate().atTime(LocalTime.parse(CHECK_OUT_TIME)).toInstant(UTC), clock.getZone())
                 .instant();
-            Subquery<Room> subquery = query.subquery(Room.class);
-            Root<Room> roomRoot = subquery.from(Room.class);
-            final Join<Room, Booking> roomBookingJoin = roomRoot.join("bookings", JoinType.LEFT);
 
-            subquery
-                .select(roomRoot)
+            Subquery<Long> bookedRooms = query.subquery(Long.class);
+            Root<Booking> bookingRoot = bookedRooms.from(Booking.class);
+            bookedRooms
+                .select(bookingRoot.get("room").get("id"))
                 .where(
-                    criteriaBuilder.or(
-                        criteriaBuilder.isNull(roomBookingJoin),
-                        criteriaBuilder.or(
-                            criteriaBuilder.equal(roomBookingJoin.get("canceled"), true),
-                            criteriaBuilder
-                                .and(
-                                    criteriaBuilder.lessThan(roomBookingJoin.get("startAt"), instantEnd),
-                                    criteriaBuilder.greaterThan(roomBookingJoin.get("endAt"), instantStart)
-                                )
-                                .not()
-                        )
-                    )
+                    criteriaBuilder.equal(bookingRoot.get("canceled"), false),
+                    criteriaBuilder.lessThan(bookingRoot.get("startAt"), instantEnd),
+                    criteriaBuilder.greaterThan(bookingRoot.get("endAt"), instantStart)
                 );
 
-            return criteriaBuilder.in(root).value(subquery);
+            Subquery<Room> roomSubquery = query.subquery(Room.class);
+            Root<Room> roomRoot = roomSubquery.from(Room.class);
+            roomSubquery.select(roomRoot).where(roomRoot.get("id").in(bookedRooms).not());
+
+            return criteriaBuilder.in(root).value(roomSubquery);
         };
     }
 }
