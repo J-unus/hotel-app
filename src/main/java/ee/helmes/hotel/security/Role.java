@@ -2,7 +2,7 @@ package ee.helmes.hotel.security;
 
 public class Role {
 
-    private static final String HAS_ROLE_PREFIX = "hasRole('ROLE_";
+    private static final String HAS_ROLE_PREFIX = "hasRole('";
     private static final String HAS_ROLE_SUFFIX = "')";
     private static final String DELIMITER = " or ";
 
