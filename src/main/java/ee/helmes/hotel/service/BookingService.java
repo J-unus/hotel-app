@@ -1,5 +1,6 @@
 package ee.helmes.hotel.service;
 
+import static ee.helmes.hotel.util.Constant.*;
 import static java.time.ZoneOffset.UTC;
 
 import ee.helmes.hotel.domain.Booking;
@@ -24,10 +25,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class BookingService {
 
-    private static final int CANCEL_BOOKING_DEADLINE_IN_DAYS = 3;
-    private static final String CHECK_IN_TIME = "15:00";
-    private static final String CHECK_OUT_TIME = "13:00";
-
     private final Clock clock;
     private final UserRepository userRepository;
     private final RoomRepository roomRepository;
@@ -46,27 +43,29 @@ public class BookingService {
     public void book(Long roomId, BookingCreateDto createDto) {
         User user = userRepository.findOneByEmailIgnoreCase(SecurityUtils.getCurrentUserLogin().orElseThrow()).orElseThrow();
         Room room = roomRepository.getReferenceById(roomId);
+        Instant startDate = Clock
+            .fixed(createDto.getStartDate().atTime(LocalTime.parse(CHECK_IN_TIME)).toInstant(UTC), clock.getZone())
+            .instant();
+        Instant endDate = Clock
+            .fixed(createDto.getEndDate().atTime(LocalTime.parse(CHECK_OUT_TIME)).toInstant(UTC), clock.getZone())
+            .instant();
 
-        if (isRoomBooked(room, createDto)) {
+        if (isRoomBooked(room, startDate, endDate)) {
             throw new IllegalArgumentException("Room already booked on requested dates");
         }
 
         Booking booking = new Booking();
         booking.setBooker(user);
         booking.setRoom(room);
-        booking.setStartAt(
-            Clock.fixed(createDto.getStartDate().atTime(LocalTime.parse(CHECK_IN_TIME)).toInstant(UTC), clock.getZone()).instant()
-        );
-        booking.setEndAt(
-            Clock.fixed(createDto.getEndDate().atTime(LocalTime.parse(CHECK_OUT_TIME)).toInstant(UTC), clock.getZone()).instant()
-        );
+        booking.setStartAt(startDate);
+        booking.setEndAt(endDate);
         booking.setCanceled(false);
 
         bookingRepository.save(booking);
     }
 
-    private boolean isRoomBooked(Room room, BookingCreateDto createDto) {
-        return roomRepository.isRoomBooked(room.getId(), createDto.getStartDate(), createDto.getEndDate());
+    private boolean isRoomBooked(Room room, Instant startDate, Instant endDate) {
+        return roomRepository.isRoomBooked(room.getId(), startDate, endDate);
     }
 
     public void cancel(Long bookingId) {
