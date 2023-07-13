@@ -1,13 +1,21 @@
 package ee.helmes.hotel.service.dto;
 
 import java.time.LocalDate;
-import java.util.List;
 
 public class RoomFilter {
 
     private LocalDate startDate;
     private LocalDate endDate;
-    private List<Integer> bedAmounts;
+    private String roomAmount;
+    private String priceRange;
+
+    public String getRoomAmount() {
+        return roomAmount;
+    }
+
+    public void setRoomAmount(String roomAmount) {
+        this.roomAmount = roomAmount;
+    }
 
     public LocalDate getStartDate() {
         return startDate;
@@ -25,11 +33,11 @@ public class RoomFilter {
         this.endDate = endDate;
     }
 
-    public List<Integer> getBedAmounts() {
-        return bedAmounts;
+    public String getPriceRange() {
+        return priceRange;
     }
 
-    public void setBedAmounts(List<Integer> bedAmounts) {
-        this.bedAmounts = bedAmounts;
+    public void setPriceRange(String priceRangeEnum) {
+        this.priceRange = priceRangeEnum;
     }
 }
