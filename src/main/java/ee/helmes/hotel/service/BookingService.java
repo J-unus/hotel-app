@@ -13,6 +13,7 @@ import ee.helmes.hotel.security.SecurityUtils;
 import ee.helmes.hotel.service.dto.BookingCreateDto;
 import ee.helmes.hotel.service.dto.BookingDto;
 import ee.helmes.hotel.service.mapper.BookingMapper;
+import ee.helmes.hotel.web.rest.errors.ValidationException;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalTime;
@@ -54,7 +55,7 @@ public class BookingService {
             .instant();
 
         if (isRoomBooked(room, startDate, endDate)) {
-            throw new IllegalArgumentException("Room already booked on requested dates");
+            throw new ValidationException("booking.alreadyBooked");
         }
 
         Booking booking = new Booking();

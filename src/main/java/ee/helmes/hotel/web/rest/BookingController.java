@@ -2,6 +2,7 @@ package ee.helmes.hotel.web.rest;
 
 import ee.helmes.hotel.security.Role;
 import ee.helmes.hotel.service.BookingService;
+import ee.helmes.hotel.service.BookingValidationService;
 import ee.helmes.hotel.service.dto.BookingCreateDto;
 import ee.helmes.hotel.service.dto.BookingDto;
 import java.util.List;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 public class BookingController {
 
     private final BookingService bookingService;
+    private final BookingValidationService bookingValidationService;
 
     @PreAuthorize(Role.HAS_ROLE_USER)
     @GetMapping("/bookings/visitor")
@@ -34,6 +36,7 @@ public class BookingController {
     @PreAuthorize(Role.HAS_ROLE_FROM_USER)
     @PostMapping("/book/room/{roomId}")
     public void book(@PathVariable Long roomId, @Valid @RequestBody BookingCreateDto request) {
+        bookingValidationService.validateBookingDateRange(request.getStartDate(), request.getEndDate());
         bookingService.book(roomId, request);
     }
 

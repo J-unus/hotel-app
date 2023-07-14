@@ -1,5 +1,6 @@
 package ee.helmes.hotel.web.rest;
 
+import ee.helmes.hotel.service.BookingValidationService;
 import ee.helmes.hotel.service.RoomService;
 import ee.helmes.hotel.service.dto.RoomDto;
 import ee.helmes.hotel.service.dto.RoomFilter;
@@ -24,9 +25,11 @@ import tech.jhipster.web.util.PaginationUtil;
 public class RoomController {
 
     private final RoomService roomService;
+    private final BookingValidationService bookingValidationService;
 
     @GetMapping
     public ResponseEntity<List<RoomDto>> query(@ParameterObject Pageable pageable, @ParameterObject RoomFilter roomFilter) {
+        bookingValidationService.validateRoomFilter(roomFilter);
         final Page<RoomDto> page = roomService.query(pageable, roomFilter);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
