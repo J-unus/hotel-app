@@ -108,16 +108,16 @@ public class AccountResource {
     /**
      * {@code POST  /account} : update the current user information.
      *
-     * @param userDTO the current user information.
+     * @param dto the current user information.
      * @throws EmailAlreadyUsedException {@code 400 (Bad Request)} if the email is already used.
      * @throws RuntimeException {@code 500 (Internal Server Error)} if the user login wasn't found.
      */
     @PostMapping("/account")
-    public void saveAccount(@Valid @RequestBody AdminUserDto userDTO) {
+    public void saveAccount(@Valid @RequestBody AdminUserDto dto) {
         String userEmail = SecurityUtils
             .getCurrentUserLogin()
             .orElseThrow(() -> new AccountResourceException("Current user login not found"));
-        Optional<User> existingUser = userRepository.findOneByEmailIgnoreCase(userDTO.getEmail());
+        Optional<User> existingUser = userRepository.findOneByEmailIgnoreCase(dto.getEmail());
         if (existingUser.isPresent() && (!existingUser.get().getEmail().equalsIgnoreCase(userEmail))) {
             throw new EmailAlreadyUsedException();
         }
@@ -125,7 +125,7 @@ public class AccountResource {
         if (user.isEmpty()) {
             throw new AccountResourceException("User could not be found");
         }
-        userService.updateUser(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail());
+        userService.updateUser(dto.getFirstName(), dto.getLastName(), dto.getEmail(), dto.getIdentityNumber());
     }
 
     /**

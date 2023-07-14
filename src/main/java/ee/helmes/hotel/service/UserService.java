@@ -196,16 +196,15 @@ public class UserService {
      * @param lastName  last name of user.
      * @param email     email id of user.
      */
-    public void updateUser(String firstName, String lastName, String email) {
+    public void updateUser(String firstName, String lastName, String email, String identityNumber) {
         SecurityUtils
             .getCurrentUserLogin()
             .flatMap(userRepository::findOneByEmailIgnoreCase)
             .ifPresent(user -> {
                 user.setFirstName(firstName);
                 user.setLastName(lastName);
-                if (email != null) {
-                    user.setEmail(email.toLowerCase());
-                }
+                user.setEmail(email.toLowerCase());
+                user.setIdentityNumber(identityNumber);
                 log.debug("Changed Information for User: {}", user);
             });
     }
