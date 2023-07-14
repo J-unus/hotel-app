@@ -1,6 +1,5 @@
 package ee.helmes.hotel.service.dto;
 
-import ee.helmes.hotel.domain.Room;
 import java.time.Instant;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +8,7 @@ import lombok.Setter;
 @Setter
 public class BookingDto {
 
-    private Room room;
+    private RoomDto room;
     private Instant startAt;
     private Instant endAt;
     private boolean canceled;

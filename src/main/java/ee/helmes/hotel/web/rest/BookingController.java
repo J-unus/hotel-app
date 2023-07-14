@@ -5,6 +5,7 @@ import ee.helmes.hotel.service.BookingService;
 import ee.helmes.hotel.service.BookingValidationService;
 import ee.helmes.hotel.service.dto.BookingCreateDto;
 import ee.helmes.hotel.service.dto.BookingDto;
+import ee.helmes.hotel.service.dto.BookingPastFutureDto;
 import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -44,5 +45,11 @@ public class BookingController {
     @PostMapping("/bookings/{id}/cancel")
     public void cancel(@PathVariable Long id) {
         bookingService.cancel(id);
+    }
+
+    @PreAuthorize(Role.HAS_ROLE_FROM_USER)
+    @GetMapping("/bookings/past-future")
+    public BookingPastFutureDto findPastAndFutureBookings() {
+        return bookingService.findPastAndFutureBookings();
     }
 }

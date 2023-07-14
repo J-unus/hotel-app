@@ -12,6 +12,7 @@ import ee.helmes.hotel.repository.UserRepository;
 import ee.helmes.hotel.security.SecurityUtils;
 import ee.helmes.hotel.service.dto.BookingCreateDto;
 import ee.helmes.hotel.service.dto.BookingDto;
+import ee.helmes.hotel.service.dto.BookingPastFutureDto;
 import ee.helmes.hotel.service.mapper.BookingMapper;
 import ee.helmes.hotel.web.rest.errors.ValidationException;
 import java.time.Clock;
@@ -23,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -34,11 +36,13 @@ public class BookingService {
     private final BookingRepository bookingRepository;
     private final BookingMapper bookingMapper;
 
+    @Transactional(readOnly = true)
     public List<BookingDto> getVisitorBookings() {
         List<Booking> bookings = bookingRepository.findByUserName(SecurityUtils.getCurrentUserLogin().orElseThrow());
         return bookingMapper.fromEntityToDto(bookings);
     }
 
+    @Transactional(readOnly = true)
     public Page<BookingDto> findAll(PageRequest request) {
         Page<Booking> bookings = bookingRepository.findAll(request);
         return bookings.map(bookingMapper::fromEntityToDto);
@@ -97,5 +101,20 @@ public class BookingService {
         Instant cancelDeadLine = booking.getStartAt().minus(CANCEL_BOOKING_DEADLINE_IN_DAYS, ChronoUnit.DAYS);
 
         return Instant.now().isAfter(cancelDeadLine);
+    }
+
+    @Transactional(readOnly = true)
+    public BookingPastFutureDto findPastAndFutureBookings() {
+        BookingPastFutureDto bookingPastFutureDto = new BookingPastFutureDto();
+        List<Booking> bookings = bookingRepository.findByUserName(SecurityUtils.getCurrentUserLogin().orElseThrow());
+        bookings.forEach(booking -> {
+            Instant today = Instant.now();
+            if (booking.getEndAt().isBefore(today) || booking.isCanceled()) {
+                bookingPastFutureDto.getPastBookings().add(bookingMapper.fromEntityToDto(booking));
+            } else {
+                bookingPastFutureDto.getFutureBookings().add(bookingMapper.fromEntityToDto(booking));
+            }
+        });
+        return bookingPastFutureDto;
     }
 }
