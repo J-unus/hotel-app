@@ -9,9 +9,9 @@ import ee.helmes.hotel.domain.User;
 import ee.helmes.hotel.repository.BookingRepository;
 import ee.helmes.hotel.repository.RoomRepository;
 import ee.helmes.hotel.repository.UserRepository;
+import ee.helmes.hotel.security.AuthoritiesConstants;
 import ee.helmes.hotel.security.SecurityUtils;
 import ee.helmes.hotel.service.dto.BookingCreateDto;
-import ee.helmes.hotel.service.dto.BookingDto;
 import ee.helmes.hotel.service.dto.BookingPastFutureDto;
 import ee.helmes.hotel.service.mapper.BookingMapper;
 import ee.helmes.hotel.web.rest.errors.ValidationException;
@@ -21,8 +21,6 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,18 +33,6 @@ public class BookingService {
     private final RoomRepository roomRepository;
     private final BookingRepository bookingRepository;
     private final BookingMapper bookingMapper;
-
-    @Transactional(readOnly = true)
-    public List<BookingDto> getVisitorBookings() {
-        List<Booking> bookings = bookingRepository.findByUserName(SecurityUtils.getCurrentUserLogin().orElseThrow());
-        return bookingMapper.fromEntityToDto(bookings);
-    }
-
-    @Transactional(readOnly = true)
-    public Page<BookingDto> findAll(PageRequest request) {
-        Page<Booking> bookings = bookingRepository.findAll(request);
-        return bookings.map(bookingMapper::fromEntityToDto);
-    }
 
     public void book(Long roomId, BookingCreateDto createDto) {
         User user = userRepository.findOneByEmailIgnoreCase(SecurityUtils.getCurrentUserLogin().orElseThrow()).orElseThrow();
@@ -76,16 +62,19 @@ public class BookingService {
         return roomRepository.isRoomBooked(room.getId(), startDate, endDate);
     }
 
+    @Transactional
     public void cancel(Long bookingId) {
         User user = userRepository.findOneByEmailIgnoreCase(SecurityUtils.getCurrentUserLogin().orElseThrow()).orElseThrow();
         Booking booking = bookingRepository.getReferenceById(bookingId);
 
-        if (!isBookingBooker(booking, user)) {
+        if (!isBookingBooker(booking, user) && !SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.ADMIN)) {
             throw new IllegalArgumentException("User and booking do not match");
         }
-
+        if (booking.isCanceled()) {
+            throw new IllegalArgumentException("Booking already canceled");
+        }
         if (hasExceededCancelDeadline(booking)) {
-            throw new IllegalArgumentException("Cancel deadline has exceeded");
+            throw new ValidationException("booking.cancelDeadline");
         }
 
         booking.setCanceled(true);
@@ -113,6 +102,21 @@ public class BookingService {
                 bookingPastFutureDto.getPastBookings().add(bookingMapper.fromEntityToDto(booking));
             } else {
                 bookingPastFutureDto.getFutureBookings().add(bookingMapper.fromEntityToDto(booking));
+            }
+        });
+        return bookingPastFutureDto;
+    }
+
+    @Transactional(readOnly = true)
+    public BookingPastFutureDto findPastAndFutureBookingsByRoomId(Long roomId) {
+        BookingPastFutureDto bookingPastFutureDto = new BookingPastFutureDto();
+        List<Booking> bookings = bookingRepository.findByRoomId(roomId);
+        bookings.forEach(booking -> {
+            Instant today = Instant.now();
+            if (booking.getEndAt().isBefore(today) || booking.isCanceled()) {
+                bookingPastFutureDto.getPastBookings().add(bookingMapper.fromEntityToDtoWithAdminUser(booking));
+            } else {
+                bookingPastFutureDto.getFutureBookings().add(bookingMapper.fromEntityToDtoWithAdminUser(booking));
             }
         });
         return bookingPastFutureDto;

@@ -11,8 +11,11 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Long> {
-    @Query(" SELECT b" + " FROM Booking b" + " JOIN FETCH b.room r" + " JOIN User u ON b.booker = u" + " WHERE u.email = :userName")
+    @Query("SELECT b FROM Booking b JOIN FETCH b.room r JOIN User u ON b.booker = u WHERE u.email = :userName")
     List<Booking> findByUserName(@Param("userName") String userName);
+
+    @Query("SELECT b FROM Booking b JOIN FETCH b.booker u JOIN Room r ON b.room = r WHERE r.id = :roomId")
+    List<Booking> findByRoomId(@Param("roomId") Long roomId);
 
     @Query(value = " SELECT b from Booking  b JOIN FETCH b.room room", countQuery = " SELECT count(b) FROM Booking b")
     Page<Booking> findAll(Pageable pageable);

@@ -6,12 +6,17 @@ import ee.helmes.hotel.domain.Room;
 import ee.helmes.hotel.domain.RoomPrice;
 import ee.helmes.hotel.service.dto.RoomDto;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 @Service
 public class RoomMapper {
+
+    public List<RoomDto> fromEntityToDto(List<Room> rooms) {
+        return rooms.stream().filter(Objects::nonNull).map(this::fromEntityToDto).collect(Collectors.toList());
+    }
 
     public RoomDto fromEntityToDto(Room room) {
         if (room == null) {
@@ -20,7 +25,8 @@ public class RoomMapper {
         RoomDto roomDto = new RoomDto();
         roomDto.setId(room.getId());
         roomDto.setRoomAmount(room.getRoomAmount());
-        roomDto.setDescription(room.getDescription());
+        roomDto.setType(room.getType());
+        roomDto.setRoomNumber(room.getRoomNumber());
         roomDto.setRoomFacilities(getRoomFacilityNames(room));
         roomDto.setSize(room.getSize());
 

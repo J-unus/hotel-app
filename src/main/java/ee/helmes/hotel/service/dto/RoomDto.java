@@ -7,7 +7,8 @@ public class RoomDto {
     private Long id;
     private Integer roomAmount;
     private Integer size;
-    private String description;
+    private String roomNumber;
+    private String type;
     private Integer oneNightPriceInCents;
     private String currency;
     private List<String> roomFacilities;
@@ -28,20 +29,28 @@ public class RoomDto {
         this.roomAmount = roomAmount;
     }
 
+    public String getRoomNumber() {
+        return roomNumber;
+    }
+
+    public void setRoomNumber(String roomNumber) {
+        this.roomNumber = roomNumber;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public Integer getSize() {
         return size;
     }
 
     public void setSize(Integer size) {
         this.size = size;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public Integer getOneNightPriceInCents() {

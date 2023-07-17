@@ -20,10 +20,13 @@ public class Room extends AbstractAuditingEntity<Long> implements Serializable {
     private Integer roomAmount;
 
     @Column(nullable = false)
-    private Integer size;
+    private String roomNumber;
 
     @Column(nullable = false)
-    private String description;
+    private String type;
+
+    @Column(nullable = false)
+    private Integer size;
 
     @OneToMany(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RoomPrice> roomPrices = new ArrayList<>();
@@ -42,6 +45,22 @@ public class Room extends AbstractAuditingEntity<Long> implements Serializable {
         this.id = id;
     }
 
+    public String getRoomNumber() {
+        return roomNumber;
+    }
+
+    public void setRoomNumber(String roomNumber) {
+        this.roomNumber = roomNumber;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public Integer getRoomAmount() {
         return roomAmount;
     }
@@ -56,14 +75,6 @@ public class Room extends AbstractAuditingEntity<Long> implements Serializable {
 
     public void setSize(Integer size) {
         this.size = size;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public List<RoomPrice> getRoomPrices() {

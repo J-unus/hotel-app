@@ -1,5 +1,6 @@
 package ee.helmes.hotel.web.rest;
 
+import ee.helmes.hotel.security.Role;
 import ee.helmes.hotel.service.BookingValidationService;
 import ee.helmes.hotel.service.RoomService;
 import ee.helmes.hotel.service.dto.RoomDto;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,6 +35,12 @@ public class RoomController {
         final Page<RoomDto> page = roomService.query(pageable, roomFilter);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    @PreAuthorize(Role.HAS_ROLE_ADMIN)
+    @GetMapping("/all")
+    public List<RoomDto> findAll() {
+        return roomService.findAll();
     }
 
     @GetMapping("/{id}")

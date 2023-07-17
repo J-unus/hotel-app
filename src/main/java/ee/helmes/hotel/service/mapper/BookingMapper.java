@@ -11,9 +11,11 @@ import org.springframework.stereotype.Service;
 public class BookingMapper {
 
     private final RoomMapper roomMapper;
+    private final UserMapper userMapper;
 
-    public BookingMapper(RoomMapper roomMapper) {
+    public BookingMapper(RoomMapper roomMapper, UserMapper userMapper) {
         this.roomMapper = roomMapper;
+        this.userMapper = userMapper;
     }
 
     public List<BookingDto> fromEntityToDto(List<Booking> bookings) {
@@ -25,11 +27,21 @@ public class BookingMapper {
             return null;
         }
         BookingDto dto = new BookingDto();
+        dto.setId(booking.getId());
         dto.setRoom(roomMapper.fromEntityToDto(booking.getRoom()));
         dto.setCanceled(booking.isCanceled());
         dto.setStartAt(booking.getStartAt());
         dto.setEndAt(booking.getEndAt());
 
+        return dto;
+    }
+
+    public BookingDto fromEntityToDtoWithAdminUser(Booking booking) {
+        if (booking == null) {
+            return null;
+        }
+        BookingDto dto = fromEntityToDto(booking);
+        dto.setBooker(userMapper.userToAdminUserDTO(booking.getBooker()));
         return dto;
     }
 }
