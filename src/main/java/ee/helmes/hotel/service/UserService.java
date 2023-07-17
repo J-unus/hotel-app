@@ -134,6 +134,7 @@ public class UserService {
         user.setResetKey(RandomUtil.generateResetKey());
         user.setResetDate(Instant.now());
         user.setActivated(true);
+        user.setIdentityNumber(userDTO.getIdentityNumber());
         if (userDTO.getAuthorities() != null) {
             Set<Authority> authorities = userDTO
                 .getAuthorities()
@@ -153,7 +154,7 @@ public class UserService {
      * Update all information for a specific user, and return the modified user.
      *
      * @param userDTO user to update.
-     * @return updated user.
+     * @return updated user.wq
      */
     public Optional<AdminUserDto> updateUser(AdminUserDto userDTO) {
         return Optional
@@ -165,6 +166,7 @@ public class UserService {
                 user.setLastName(userDTO.getLastName());
                 user.setEmail(userDTO.getEmail().toLowerCase());
                 user.setActivated(userDTO.isActivated());
+                user.setIdentityNumber(userDTO.getIdentityNumber());
                 Set<Authority> managedAuthorities = user.getAuthorities();
                 managedAuthorities.clear();
                 userDTO

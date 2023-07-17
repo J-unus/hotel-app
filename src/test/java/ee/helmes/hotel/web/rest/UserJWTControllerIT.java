@@ -48,7 +48,7 @@ class UserJWTControllerIT {
         userRepository.saveAndFlush(user);
 
         LoginVM login = new LoginVM();
-        login.setUsername("user-jwt-controller");
+        login.setUsername("user-jwt-controller@example.com");
         login.setPassword("test");
         mockMvc
             .perform(post("/api/authenticate").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(login)))
@@ -70,7 +70,7 @@ class UserJWTControllerIT {
         userRepository.saveAndFlush(user);
 
         LoginVM login = new LoginVM();
-        login.setUsername("user-jwt-controller-remember-me");
+        login.setUsername("user-jwt-controller-remember-me@example.com");
         login.setPassword("test");
         login.setRememberMe(true);
         mockMvc
