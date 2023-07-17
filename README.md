@@ -1,3 +1,18 @@
+### Local quick setup
+
+#### IntelliJ IDEA
+
+- Prerequisites - Docker, Lombok plugin and JDK 11
+- To start postgres database, run command `docker compose -f src/main/docker/postgresql.yml up`
+- Run 'HotelApp'
+- Frontend available in project hotel-client-frontend
+
+#### Test accounts
+
+- login: user@localhost pass: user
+- login: user2@localhost pass: user
+- login: admin@localhost pass: admin
+
 # hotelApp
 
 This application was generated using JHipster 7.9.3, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v7.9.3](https://www.jhipster.tech/documentation-archive/v7.9.3).
