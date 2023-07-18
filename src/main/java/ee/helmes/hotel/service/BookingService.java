@@ -121,4 +121,20 @@ public class BookingService {
         });
         return bookingPastFutureDto;
     }
+
+    @Transactional
+    public void rate(Long id, Integer rating) {
+        User user = userRepository.findOneByEmailIgnoreCase(SecurityUtils.getCurrentUserLogin().orElseThrow()).orElseThrow();
+        Booking booking = bookingRepository.getReferenceById(id);
+
+        if (!isBookingBooker(booking, user)) {
+            throw new IllegalArgumentException("User and booking do not match");
+        }
+        if (booking.isCanceled()) {
+            throw new IllegalArgumentException("Cannot rate canceled booking");
+        }
+
+        booking.setRating(rating);
+        bookingRepository.save(booking);
+    }
 }

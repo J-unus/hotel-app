@@ -2,12 +2,14 @@ package ee.helmes.hotel.service.mapper;
 
 import static ee.helmes.hotel.util.Constant.DEFAULT_CURRENCY;
 
+import ee.helmes.hotel.domain.Booking;
 import ee.helmes.hotel.domain.Room;
 import ee.helmes.hotel.domain.RoomPrice;
 import ee.helmes.hotel.service.dto.RoomDto;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.OptionalDouble;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +31,7 @@ public class RoomMapper {
         roomDto.setRoomNumber(room.getRoomNumber());
         roomDto.setRoomFacilities(getRoomFacilityNames(room));
         roomDto.setSize(room.getSize());
+        roomDto.setAverageRating(getAverageRating(room.getBookings()));
 
         Optional<RoomPrice> roomPriceOptional = getRoomPrice(room);
         if (roomPriceOptional.isPresent()) {
@@ -45,5 +48,18 @@ public class RoomMapper {
 
     private Optional<RoomPrice> getRoomPrice(Room room) {
         return room.getRoomPrices().stream().filter(roomPrice -> roomPrice.getCurrency().equals(DEFAULT_CURRENCY)).findFirst();
+    }
+
+    public Double getAverageRating(List<Booking> bookings) {
+        OptionalDouble optionalDouble = bookings
+            .stream()
+            .map(Booking::getRating)
+            .filter(Objects::nonNull)
+            .mapToInt(Integer::intValue)
+            .average();
+        if (optionalDouble.isEmpty()) {
+            return null;
+        }
+        return optionalDouble.getAsDouble();
     }
 }

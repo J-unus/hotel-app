@@ -32,6 +32,7 @@ public class BookingMapper {
         dto.setCanceled(booking.isCanceled());
         dto.setStartAt(booking.getStartAt());
         dto.setEndAt(booking.getEndAt());
+        dto.setRating(booking.getRating());
 
         return dto;
     }

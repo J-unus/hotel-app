@@ -13,5 +13,6 @@ public class BookingDto {
     private Instant startAt;
     private Instant endAt;
     private boolean canceled;
+    private Integer rating;
     private AdminUserDto booker;
 }

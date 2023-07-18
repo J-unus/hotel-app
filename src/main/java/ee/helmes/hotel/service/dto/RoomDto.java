@@ -11,6 +11,7 @@ public class RoomDto {
     private String type;
     private Integer oneNightPriceInCents;
     private String currency;
+    private Double averageRating;
     private List<String> roomFacilities;
 
     public Long getId() {
@@ -75,5 +76,13 @@ public class RoomDto {
 
     public void setRoomFacilities(List<String> roomFacilities) {
         this.roomFacilities = roomFacilities;
+    }
+
+    public Double getAverageRating() {
+        return averageRating;
+    }
+
+    public void setAverageRating(Double averageRating) {
+        this.averageRating = averageRating;
     }
 }

@@ -31,6 +31,12 @@ public class BookingController {
         bookingService.cancel(id);
     }
 
+    @PreAuthorize(Role.HAS_ROLE_USER)
+    @PostMapping("/bookings/{id}/rate/{rating}")
+    public void rate(@PathVariable Long id, @PathVariable Integer rating) {
+        bookingService.rate(id, rating);
+    }
+
     @PreAuthorize(Role.HAS_ROLE_FROM_USER)
     @GetMapping("/bookings/past-future")
     public BookingPastFutureDto findPastAndFutureBookings() {

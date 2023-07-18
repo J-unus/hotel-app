@@ -22,7 +22,10 @@ public class Booking extends AbstractAuditingEntity<Long> implements Serializabl
     private Instant endAt;
 
     @Column(nullable = false)
-    boolean canceled = false;
+    private boolean canceled = false;
+
+    @Column
+    private Integer rating;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private User booker;
@@ -76,5 +79,13 @@ public class Booking extends AbstractAuditingEntity<Long> implements Serializabl
 
     public void setRoom(Room room) {
         this.room = room;
+    }
+
+    public Integer getRating() {
+        return rating;
+    }
+
+    public void setRating(Integer rating) {
+        this.rating = rating;
     }
 }
